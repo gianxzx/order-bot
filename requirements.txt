@@ -1,0 +1,2 @@
+discord.py
+# add others if you use them (e.g. aiosqlite later)
