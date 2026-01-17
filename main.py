@@ -22,24 +22,36 @@ class MyBot(commands.Bot):
     async def on_ready(self):
         print(f"Logged in as {self.user} (ID: {self.user.id})")
 
-    async def on_message(self, message):
+        async def on_message(self, message):
         # 1. THE INTERCEPTION
-        # Filter: Only act if it's in the Input Channel and is a Webhook
         if message.channel.id == INPUT_CHANNEL_ID and message.webhook_id:
             
+            # Default values
+            description_text = message.content
+            
+            # If the webhook sent an Embed (like in your screenshot), capture its data
+            if not description_text and len(message.embeds) > 0:
+                incoming_embed = message.embeds[0]
+                # Use the description or title of the incoming embed
+                description_text = incoming_embed.description or incoming_embed.title or "New Order Received"
+            
             # 2. THE TRANSFORMATION
-            # Create a professional looking embed from the webhook text
-            embed = discord.Embed(
-                title="📦 New Action Required",
-                description=message.content,
+            # We wrap the captured data into our own interactive embed
+            new_embed = discord.Embed(
+                title="🩵 NEW KITCHEN TICKET",
+                description=description_text,
                 color=discord.Color.blue()
             )
-            embed.set_footer(text=f"Source ID: {message.webhook_id}")
-
-            # Send the interactive version
-            await message.channel.send(embed=embed, view=ClaimView(QUEUE_CHANNEL_ID))
             
-            # Delete the messy original webhook message
+            # If the original embed had fields (like Roblox User, Total Bill), copy them
+            if len(message.embeds) > 0:
+                for field in message.embeds[0].fields:
+                    new_embed.add_field(name=field.name, value=field.value, inline=field.inline)
+
+            # Send the interactive version with buttons
+            await message.channel.send(embed=new_embed, view=ClaimView(QUEUE_CHANNEL_ID))
+            
+            # Delete the original webhook message
             await message.delete()
 
         await self.process_commands(message)
