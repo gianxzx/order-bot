@@ -1,3 +1,0 @@
-discord.py
-gunicorn 
-# add others if you use them (e.g. aiosqlite later)
