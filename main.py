@@ -9,8 +9,8 @@ import os
 # ================= CONFIG =================
 # Use environment variables for security (set these on Render)
 TOKEN = os.getenv("MTQ2MDk1ODY1MDY2NjMxOTkxMw.G-OZ2g.BsxOur3nrvuVYhDL6tx5tKuma6MAWEe9RzJ9zI")
-INPUT_CHANNEL_ID = int(os.getenv("INPUT_CHANNEL_ID", "1461710247969292313"))  # webhook input
-QUEUE_CHANNEL_ID = int(os.getenv("QUEUE_CHANNEL_ID", "1461710247969292316"))  # claimed queue
+INPUT_CHANNEL_ID = int(os.getenv("1461710247969292313", "123456789012345678"))  # webhook input
+QUEUE_CHANNEL_ID = int(os.getenv("1461710247969292316", "987654321098765432"))  # claimed queue
 LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID", "0")) or None  # optional decline log
 
 DB_FILE = "claims.db"  # Stored in Render's persistent disk
